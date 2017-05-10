@@ -1,24 +1,15 @@
 #!/usr/bin/python
 import subprocess
-import re
+import Parser
+import s2ListConverter
+[a,b] = Parser.s2parser("Sequencer LE.SC2Replay")
 
-out = subprocess.Popen(["python.exe", "../s2protocol/s2protocol.py", "../s2protocol/Sequencer LE.SC2Replay",
-                        "--trackerevents"],stdout=subprocess.PIPE)
-output_list = out.stdout.readlines()
-# for i in output_list:
-#     if i != '\n':
-#         print i,
+convList = s2ListConverter.listconverter(a)
+convList.extend(s2ListConverter.listconverter(b))
 
-concat_list = ''.join(output_list).split("{")
-bornList = []
-buildList = []
-for str in concat_list:
-    if "SUnitBornEvent" in str:
-        bornList.append(str)
-for str in concat_list:
-    if "SUnitInitEvent" in str:
-        buildList.append(str)
-
-for i in buildList:
+for i in convList:
     if i != '\n':
         print "element:",i
+
+#22.4 ticks per second
+
